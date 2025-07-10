@@ -6,6 +6,45 @@ This repository provides a simple implementation for generating <strong>JSON Web
 
 <img src="./docs/jwt_flow.png" alt="Flow JWT" width="600"/>
 
+<h2>📦 Repository Structure</h2>
+
+<p>
+This project is organized into two main libraries, each handling a key part of the Zendesk Messaging authentication flow:
+</p>
+
+<h3><code>jwt</code> - JWT Generator</h3>
+
+<p>
+Responsible for generating the JSON Web Token (<strong>JWT</strong>) required by Zendesk for user authentication. This module follows all the JWT specifications defined by Zendesk and uses the following environment variables:
+</p>
+
+<ul>
+  <li><code>JWT_SECRET</code>: The shared secret provided by Zendesk, used to sign the token.</li>
+  <li><code>KEY_ID</code>: The Key ID (<code>kid</code>) of the signing key, also provided by Zendesk.</li>
+</ul>
+
+<p>
+To configure these variables in Zendesk, see <a href="#1--generating-a-signing-key">1. Generating a Signing Key</a>.
+</p>
+
+<h3><code>zendesk-api</code> - User Data Integration</h3>
+
+<p>
+Handles the communication with the Zendesk REST API to fetch user data (such as <code>external_id</code>) based on their email address. This is critical for associating the correct user profile when issuing the JWT.
+</p>
+
+<p>Required environment variables:</p>
+
+<ul>
+  <li><code>ZENDESK_API_TOKEN</code>: Your Zendesk API token with read access to users.</li>
+  <li><code>ZENDESK_EMAIL</code>: Admin email address (preferably the account owner).</li>
+  <li><code>ZENDESK_SUBDOMAIN</code>: The subdomain of your Zendesk instance (e.g., <code>yourcompany</code> for <code>yourcompany.zendesk.com</code>).</li>
+</ul>
+
+<p>
+To configure these variables in Zendesk, see <a href="#2--generating-an-api-token">2. Generating an API Token</a>.
+</p>
+
 <h2>1. 🔑 Generating a Signing Key</h2>
 
 <p>
@@ -33,7 +72,31 @@ The <strong>Key ID</strong> and <strong>Shared Secret</strong> may appear with d
 
 <img src="./docs/admin_center_signing_keys.png" alt="Signing Key Settings in Zendesk Admin Center" width="600"/>
 
-<h2>2. 🛠️ Creating a JWT for Messaging Token</h2>
+<h2>2. 🔑 Generating an API Token</h2>
+
+<p>
+To generate an API token, you must be an <strong>administrator</strong> and have <strong>API token access enabled</strong> in your Zendesk account.
+</p>
+
+<p>
+You can view, create, or delete API tokens by navigating to:
+</p>
+
+<pre><code>Admin Center &gt; Apps and Integrations &gt; API &gt; API Tokens</code></pre>
+
+<!-- Imagen de navegación al token -->
+<img src="./docs/zendesk_api_token.png" alt="API Token Settings in Zendesk Admin Center" width="600"/>
+
+<p>
+Click <strong>Add API token</strong> and follow the steps. Make sure to <strong>copy the token and store it in a secure location</strong>, because:
+</p>
+
+<blockquote>
+When you click <strong>Save</strong> to close the window, the full token will never be displayed again.
+</blockquote>
+
+
+<h2>3. 🛠️ Creating a JWT for Messaging Token</h2>
 
 <p>
 JWT for Messaging is used <strong>only</strong> for the Zendesk Web Widget and SDKs. It is <strong>not</strong> the same as the Support SDK JWT or Zendesk Support SSO JWT.
@@ -76,7 +139,7 @@ JWT for Messaging is used <strong>only</strong> for the Zendesk Web Widget and S
 <!-- Imagen del código -->
 <img src="./docs/payload_jwt.png" alt="JWT Token Generation in JavaScript" width="600"/>
 
-<h2>3. 💬 Web Widget and Mobile SDK Experience with Authenticated Visitors</h2>
+<h2>4. 💬 Web Widget and Mobile SDK Experience with Authenticated Visitors</h2>
 
 <p>
 The messaging Web Widget allows authentication of users so their identity can be verified by agents in Zendesk.
