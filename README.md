@@ -8,9 +8,17 @@ This repository provides a simple implementation for generating <strong>JSON Web
 
 <h2>📦 Repository Structure</h2>
 
-<p>
-This project is organized into two main libraries, each handling a key part of the Zendesk Messaging authentication flow:
-</p>
+<p>This repository has the following folder and file organization:</p>
+
+<pre><code>.
+├── docs/
+│   └── (assets and screenshots)
+├── lib/
+│   ├── jwt.mjs             # Handles JWT creation logic
+│   └── zendesk-api.mjs     # Handles Zendesk API user lookup by email
+├── index.mjs               # Main entry point
+└── README.md               # Project documentation
+</code></pre>
 
 <h3><code>jwt</code> - JWT Generator</h3>
 
